@@ -14,17 +14,17 @@ int main(){
     if(pid == 0){
         int child = getpid();
         char msg[4];
-        if(read(pingpong[0], msg, 4) != -1){
+        if(read(pingpong[0], msg, sizeof(msg)) != -1){
             printf("%d: received %s\n", child, msg);
             strcpy(msg, "pong");
-            write(pingpong[1], msg, 4);
+            write(pingpong[1], msg, sizeof(msg));
             exit(0);
         }
     }else{
         int parent = getpid();
         char msg[4] = "ping";
-        write(pingpong[1], msg, 4);
-        if(read(pingpong[0], msg, 4) != -1){
+        write(pingpong[1], msg, sizeof(msg));
+        if(read(pingpong[0], msg, sizeof(msg)) != -1){
             printf("%d: received %s\n", parent, msg);
         }
     }

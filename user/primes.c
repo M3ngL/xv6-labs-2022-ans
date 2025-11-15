@@ -6,7 +6,7 @@ void filter(int *pre_p){
     close(pre_p[1]);
 
     int prime;
-    if(read(pre_p[0], &prime, 4) != 4){ // 递归的退出条件判断
+    if(read(pre_p[0], &prime, sizeof(int)) != 4){ // 递归的退出条件判断
         close(pre_p[0]);
         exit(0);
     }
@@ -26,9 +26,9 @@ void filter(int *pre_p){
     }else{
         close(p[0]); // 将父进程的所有管道都关闭，这样才能正常退出程序
         int num;
-        while(read(pre_p[0], &num, 4) == 4){
+        while(read(pre_p[0], &num, sizeof(int)) == 4){
             if(num % prime != 0){
-                write(p[1], &num, 4);
+                write(p[1], &num, sizeof(int));
             }
         }
         close(pre_p[0]);
@@ -45,7 +45,7 @@ int main(){
         exit(1);
     }
     for(int i = 2; i <= 35; i++){
-        write(p[1], &i, 4);
+        write(p[1], &i, sizeof(int));
     }
     filter(p);
     exit(0);
