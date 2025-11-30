@@ -309,6 +309,9 @@ fork(void)
   np->cwd = idup(p->cwd);
 
   safestrcpy(np->name, p->name, sizeof(p->name));
+  
+  // copy trace mask
+  np->trace_mask = p->trace_mask;
 
   pid = np->pid;
 
@@ -680,4 +683,11 @@ procdump(void)
     printf("%d %s %s", p->pid, state, p->name);
     printf("\n");
   }
+}
+
+void
+trace(int mask){
+  struct proc *p = myproc();
+  p->trace_mask = mask;
+  return;
 }
