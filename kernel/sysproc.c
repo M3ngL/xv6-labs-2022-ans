@@ -36,6 +36,17 @@ sys_trace(void){
 }
 
 uint64
+sys_sysinfo(void){
+  uint64 addr;
+  argaddr(0, &addr);
+  if(sysinfo(addr) < 0){
+    return -1;
+  }else{
+    return 0;
+  }
+}
+
+uint64
 sys_wait(void)
 {
   uint64 p;
