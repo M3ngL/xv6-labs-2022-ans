@@ -1,0 +1,4 @@
+Q1：Which other xv6 system call(s) could be made faster using this shared page? Explain how.
+A1：getpid()，直接读取usyscall->pid.
+Q2: Explain the output of vmprint in terms of Fig 3-4 from the text. What does page 0 contain? What is in page 2? When running in user mode, could the process read/write the memory mapped by page 1? What does the third to last page contain?
+A2：page0 包含进程的可执行代码和数据，page2包含进程的栈；用户模式下进程不能读写page1，因为这是guard page；third to last page包含trapframe页。

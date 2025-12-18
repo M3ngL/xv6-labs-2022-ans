@@ -456,3 +456,22 @@ vmprint(pagetable_t pagetable, uint16 depth)
     }
   }
 }
+
+// access bit
+int
+pgaccess(uint64 buf, int pagenum, uint64 abits, pagetable_t pagetable)
+{
+  uint64 bitmask = 0;
+  for(int i = 0; i < pagenum; i++){
+    pte_t* pte = walk(pagetable, buf + i * PGSIZE, 0);
+    if (pte == 0)
+      panic("page not exist.");
+    bitmask += ((PTE_A & PTE_FLAGS(*pte)) != 0) << i;
+    *pte = ~PTE_A & *pte;
+  }
+  
+  if(copyout(pagetable, abits, (char*) &bitmask, sizeof(uint64)) < 0){
+    return -1;
+  }
+  return 0;
+}

@@ -74,7 +74,19 @@ sys_sleep(void)
 int
 sys_pgaccess(void)
 {
-  // lab pgtbl: your code here.
+  int pagenum;
+  uint64 buf_addr, abits_addr;
+
+  argaddr(0, &buf_addr);
+  argint(1, &pagenum);
+  argaddr(2, &abits_addr);
+
+  struct proc *p = myproc();
+
+  if(pgaccess(buf_addr, pagenum, abits_addr, p->pagetable) < 0){
+    return -1;
+  }
+  
   return 0;
 }
 #endif
